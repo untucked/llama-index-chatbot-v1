@@ -10,6 +10,14 @@
 ------------
 The **Llama Index Chatbot App (v1)** is a Python-based application that enables interactive conversations with multiple PDF documents. Users can pose questions in natural language, and the chatbot provides relevant answers derived from the content of the loaded PDFs. This tool leverages advanced language models to ensure accurate and contextually appropriate responses. Note that the chatbot's knowledge is confined to the uploaded documents.
 
+### Goal
+------------
+I wanted to create a pdf reader to run locally on a laptop and utilize local LLM's such as Llama and Ollama. 
+There's an option for OpenAI as well so they handle all the heavy lifting, but I wanted to try the other options as well.
+The ideal user for this would be 
+- someone who wants to read PDF's with LLM's locally & 
+- someone who has limited admin access to their laptop and are required to read lots of PDF's
+
 ## How It Works
 ------------
 
