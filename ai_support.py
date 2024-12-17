@@ -7,11 +7,11 @@ from llama_index.embeddings.langchain import LangchainEmbedding
 from llama_index.embeddings.ollama import OllamaEmbedding
 
 # https://docs.llamaindex.ai/en/stable/examples/embeddings/Langchain/
-def get_embedding(emb_option='stella_lite'):
+def get_embedding(emb_option='MiniLM-L6'):
     model_kwargs = {'device': 'cpu'}
     encode_kwargs = {'normalize_embeddings': False}
 
-    if emb_option == 'BAAI':
+    if emb_option == 'bge-base-en':
         model_name = "BAAI/bge-base-en-v1.5"        
         embeddings = HuggingFaceEmbeddings(
             model_name=model_name,
@@ -33,7 +33,7 @@ def get_embedding(emb_option='stella_lite'):
             model_kwargs=model_kwargs,
             encode_kwargs=encode_kwargs,
         )
-    elif emb_option == 'sentence_trans':
+    elif emb_option == 'MiniLM-L6':
         model_name = 'sentence-transformers/all-MiniLM-L6-v2'
         model_kwargs["trust_remote_code"] = True  # Add this to the model_kwargs
         embeddings = HuggingFaceEmbeddings(

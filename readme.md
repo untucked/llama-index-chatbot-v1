@@ -44,6 +44,7 @@ Follow these steps to set up the Llama Index Chatbot App on your local machine:
 ### **1. Clone the Repository**
 git clone https://github.com/untucked/llama-index-chatbot-v1.git
 cd llama-index-chatbot-v1
+
 ### **2. Run the Application
 bash
 streamlit run main.py
@@ -51,5 +52,6 @@ streamlit run main.py
 ### **3. Interact with the App
 
 The application will open in your default web browser.
+Select the embedding option and LLM option. The Embedding reads the PDFs and the LLM interprets the PDFs with your questions and provides an answer.
 Load Documents: Enter the directory path containing your PDF documents and click "Load Documents."
 Chat: Once documents are loaded, use the chat interface to ask questions related to the content of the PDFs.

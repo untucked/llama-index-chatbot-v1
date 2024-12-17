@@ -4,15 +4,21 @@ import sys
 from dotenv import load_dotenv
 import os
 # streamlit run main.py
-# Local imports
-sys.path.append(r'C:\Users\eylan\Documents\llama')
-from ai_support import *
-from htmlTemplates import *
+
 
 # Load environment variables
 load_dotenv()
 open_ai_key = os.getenv("OPENAI_API_KEY")
 huggingfacehub_api_token = os.getenv("HUGGINGFACEHUB_API_TOKEN")
+LLM_Directory = os.getenv("LLM_Directory")
+sys.path.append(r'%s'%(LLM_Directory))
+
+# Local imports
+from ai_support import *
+from htmlTemplates import *
+
+embedding_options = ['bge-base-en', 'stella', 'stella_lite', 'MiniLM-L6', 'OpenAI']
+llm_options = ['OpenAI', 'meta-llama', 'Qwen', 'MiniChat', 'sentence-transformers', 'Ollama3.2', 'Ollama3']
 
 # Disable Hugging Face symlinks warning
 os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
@@ -37,6 +43,20 @@ directory = st.sidebar.text_input(
     value='./data'
 )
 
+# Dropdown for Embedding Model Selection
+emb_option = st.sidebar.selectbox(
+    "Select Embedding Model:",
+    options=embedding_options,
+    index=embedding_options.index('MiniLM-L6')  # Default selection
+)
+
+# Dropdown for LLM Model Selection
+llm_option = st.sidebar.selectbox(
+    "Select LLM Model:",
+    options=llm_options,
+    index=llm_options.index('Ollama3.2')  # Default selection
+)
+
 load_docs = st.sidebar.button("Load Documents")
 
 if load_docs:
@@ -44,9 +64,9 @@ if load_docs:
         try:
             documents = SimpleDirectoryReader(directory).load_data()
             # Set up embedding model
-            Settings.embed_model = get_embedding(emb_option='sentence_trans')
+            Settings.embed_model = get_embedding(emb_option=emb_option)
             # Set up LLM
-            Settings.llm = get_LLM(llm_option='Ollama3.2', env_vars=os.environ)
+            Settings.llm = get_LLM(llm_option=llm_option, env_vars=os.environ)
             # Create the vector index
             st.session_state.index = VectorStoreIndex.from_documents(documents)
             st.session_state.documents_loaded = True
@@ -54,9 +74,14 @@ if load_docs:
         except Exception as e:
             st.error(f"Error loading documents: {e}")
 
+# Display selected models in the sidebar
+if st.session_state.documents_loaded:
+    st.sidebar.subheader("Selected Models")
+    st.sidebar.write(f"**Embedding Model:** {emb_option}")
+    st.sidebar.write(f"**LLM Model:** {llm_option}")
+
 if st.session_state.documents_loaded:
     st.header("💬 Chat with Your Documents")
-
     # Use a form to handle user input and submission
     with st.form(key="chat_form", clear_on_submit=True):
         user_input = st.text_input("You:", "")
